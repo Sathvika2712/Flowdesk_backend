@@ -4,6 +4,9 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 
+
+
+
 # ─────────────── Flask Setup ───────────────
 app = Flask(__name__)
 app.secret_key = 'super_secret_key'  # Replace with env var in production
@@ -11,6 +14,10 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 # ─────────────── Google Sheets Setup ───────────────
+
+creds_dict = json.loads(os.environ["GOOGLE_CREDS"])
+creds = Credentials.from_service_account_info(creds_dict)
+client = gspread.authorize(creds)
 scopes = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"  # <-- Important for searching
